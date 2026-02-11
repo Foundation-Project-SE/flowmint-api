@@ -1,13 +1,23 @@
 import os
+from typing import List
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import PostgresDsn, field_validator, AnyHttpUrl
 
 class Settings(BaseSettings):
-    # Required variables (without default value)
-    DATABASE_URL: str
-    
-    # Default variables values
     PROJECT_NAME: str = "FlowMind API"
     API_V1_STR: str = "/api/v1"
+    DATABASE_URL: PostgresDsn
+    
+    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
+    
+    @field_validator("BACKEND_CORS_ORIGINS", mode="before")
+    @classmethod
+    def assemble_cors_origins(cls, v: str | List[str]) -> List[str] | str:
+        if isinstance(v, str) and not v.startswith("["):
+            return [i.strip() for i in v.split(",")]
+        elif isinstance(v, (list, str)):
+            return v
+        raise ValueError(v)
     
     model_config = SettingsConfigDict(
         env_file=".env", 
