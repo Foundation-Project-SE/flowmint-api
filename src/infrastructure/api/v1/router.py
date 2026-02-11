@@ -7,7 +7,7 @@ async def health_check():
     """Check if system is currently operational."""
     return {
         "status": "ok",
-        "app": "FlowMint API",
+        "app": "FlowMind API",
         "version": "0.1.0"
     }
 

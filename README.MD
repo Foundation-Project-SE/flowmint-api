@@ -64,7 +64,7 @@ DATABASE_URL=your_database_url
 Optional (with default values):
 
 ```env
-PROJECT_NAME=FlowMint API
+PROJECT_NAME=FlowMind API
 API_V1_STR=/api/v1
 ```
 

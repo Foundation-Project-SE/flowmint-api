@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     
     # Default variables values
-    PROJECT_NAME: str = "FlowMint API"
+    PROJECT_NAME: str = "FlowMind API"
     API_V1_STR: str = "/api/v1"
     
     model_config = SettingsConfigDict(
