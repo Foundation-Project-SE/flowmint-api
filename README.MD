@@ -1,68 +1,108 @@
 # Foundation Project - Backend API
 
-Bienvenido al repositorio oficial del Backend para el proyecto Foundation. Este servicio expone una API RESTful construida con Django y Django REST Framework (DRF), diseñada para ser escalable y modular.
+Welcome to the official Backend repository for the Foundation project. This service exposes a RESTful API built with **FastAPI**, designed to be scalable and modular following **Hexagonal Architecture**.
 
 ## Tech Stack
 
-* **Lenguaje:** Python 3.10 o superior
-* **Framework Web:** Django 5.x 
-* **API Toolkit:** Django REST Framework 
-* **Seguridad y Configuración:** Python-Decouple y CORS Headers
+* **Language:** Python 3.12 or higher
+* **Web Framework:** FastAPI
+* **ASGI Server:** Uvicorn
+* **Validation & Configuration:** Pydantic and Pydantic-Settings
+* **Environment Variables:** python-dotenv
 
-## Prerrequisitos
+## Project Architecture
 
-Asegúrate de tener instalado en tu máquina: 
-* [Python 3.10](https://www.python.org/downloads/) o superior.
-* [Git](https://git-scm.com/).
+The project follows **Hexagonal Architecture** with the following structure:
 
-## Instalación y Configuración (Local)
+```
+src/
+├── main.py                 # Application entry point
+├── domain/                 # Domain layer
+│   ├── models/             # Domain models
+│   └── schemas/            # Domain schemas
+├── application/            # Application layer
+│   ├── ports/              # Interfaces (ports)
+│   └── use_cases/          # Use cases
+└── infrastructure/         # Infrastructure layer
+    ├── api/                # HTTP routes and controllers
+    │   └── v1/
+    ├── config.py           # Configuration (Pydantic Settings)
+    └── persistence/        # Persistence adapters
+```
 
-Sigue estos pasos para levantar el entorno de desarrollo:
+## Prerequisites
 
-### 1. Clonar el repositorio
+Make sure you have installed on your machine:
+
+* [Python 3.12](https://www.python.org/downloads/) or higher
+* [Poetry](https://python-poetry.org/) (dependency management)
+* [Git](https://git-scm.com/)
+
+## Installation and Configuration (Local)
+
+### 1. Clone the repository
+
 ```bash
-git clone [https://github.com/Foundation-Project-SE/backend.git](https://github.com/Foundation-Project-SE/backend.git)
+git clone https://github.com/Foundation-Project-SE/backend.git
 cd backend
 ```
 
-### 2.Creación de entorno virtual
-
-## En Windows: 
+### 2. Install dependencies (Poetry)
 
 ```bash
-python -m venv venv
-.\venv\Scripts\activate
+poetry install
 ```
 
-## En macOS o Linux: 
-```bash
-python3 -m venv venv
-source venv/bin/activate
+### 3. Configure environment variables
+
+Create a `.env` file in the project root with the following variables:
+
+```env
+DATABASE_URL=your_database_url
 ```
 
-### 3. Instalación de dependencias
+Optional (with default values):
 
-```bash
-pip install -r requirements.txt
+```env
+PROJECT_NAME=FlowMint API
+API_V1_STR=/api/v1
 ```
 
-### 4. Migraciones de Base de Datos
-
-```bash
-python manage.py migrate
-```
-
-### ▶️ Ejecución
-
-# Para iniciar el servidor:
+### 4. Activate the virtual environment (if using Poetry)
 
 ```bash
-python manage.py runserver
+poetry shell
 ```
 
-# Endpoints Disponibles:
+## Running the Application
 
-| Método | Endpoint | Descripción |
+### Development
+
+```bash
+uvicorn src.main:app --reload
+```
+
+### Production
+
+```bash
+uvicorn src.main:app --host 0.0.0.0 --port 8000
+```
+
+The application will be available at `http://localhost:8000`.
+
+## Available Endpoints
+
+| Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| **GET** | `/health/` | Healthcheck del sistema. Verifica servicio y conexión a BD. |
-| **GET** | `/admin/` | Panel de Administración de Django. |
+| **GET** | `/` | Redirects to Swagger documentation (`/docs`) |
+| **GET** | `/api/v1/health` | System health check. Verifies the service is operational. |
+| **GET** | `/api/v1/ping` | Simple latency test. Returns `{"message": "pong"}` |
+| **GET** | `/docs` | Interactive Swagger UI documentation |
+| **GET** | `/api/v1/openapi.json` | OpenAPI schema in JSON format |
+
+## API Documentation
+
+Once the server is running, access the interactive documentation at:
+
+* **Swagger UI:** [http://localhost:8000/docs](http://localhost:8000/docs)
+* **ReDoc:** [http://localhost:8000/redoc](http://localhost:8000/redoc)
