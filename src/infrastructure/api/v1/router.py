@@ -4,7 +4,7 @@ api_router = APIRouter()
 
 @api_router.get("/health", tags=["System"])
 async def health_check():
-    """Verifica que el sistema esté operativo."""
+    """Check if system is currently operational."""
     return {
         "status": "ok",
         "app": "FlowMint API",
@@ -13,5 +13,5 @@ async def health_check():
 
 @api_router.get("/ping", tags=["System"])
 async def ping():
-    """Prueba de latencia simple."""
+    """Simple latency check"""
     return {"message": "pong"}
