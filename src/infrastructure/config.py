@@ -1,13 +1,14 @@
-import os
 from typing import List
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import PostgresDsn, field_validator, AnyHttpUrl
+
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "FlowMind API"
     API_V1_STR: str = "/api/v1"
     DATABASE_URL: PostgresDsn
-    
+    SQL_ECHO: bool = False  # Set to True for SQL debug output; keep False in production
+
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
     
     @field_validator("BACKEND_CORS_ORIGINS", mode="before")

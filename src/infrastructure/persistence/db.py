@@ -3,10 +3,10 @@ from sqlalchemy.orm import DeclarativeBase
 from src.infrastructure.config import settings
 
 # 1. Engine
-# Physic connection with db. "echo=True" shows SQL on console for debuggin purposes
+# Physical connection with db. echo=True shows SQL on console for debugging (configure via SQL_ECHO)
 engine = create_async_engine(
     str(settings.DATABASE_URL),
-    echo=True,
+    echo=settings.SQL_ECHO,
     future=True,
     connect_args={"statement_cache_size": 0}    # This line solves de PgBouncer technology on Transaction Pooler of supabase
                                                 # Turning off the cache allows to use shared connections (Transaction Pooler)
