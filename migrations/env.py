@@ -6,12 +6,18 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 
+# ------------------------------------------------------------------------------------
+
 # 1: Import configuration and models.
 from src.infrastructure.config import settings
 from src.infrastructure.persistence.db import Base
 
 # (Here goes future models imports for Alembic can detect them)
 # from src.domain.models.user import User  <-- Future Example
+
+from src.infrastructure.persistence.models.budget_period import BudgetPeriodModel
+
+# -------------------------------------------------------------------------------------
 
 config = context.config
 
