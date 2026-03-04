@@ -1,4 +1,12 @@
 from fastapi import APIRouter
+from src.infrastructure.api.v1.endpoints import (
+    periods,
+    categories,
+    allocations,
+    transactions,
+    transfers,
+    snapshot
+)
 
 api_router = APIRouter()
 
@@ -15,3 +23,16 @@ async def health_check():
 async def ping():
     """Simple latency check"""
     return {"message": "pong"}
+
+# 1. Core Budgeting
+api_router.include_router(periods.router, prefix="/periods", tags=["periods"])
+api_router.include_router(categories.router, prefix="/categories", tags=["categories"])
+api_router.include_router(allocations.router, prefix="/allocations", tags=["allocations"])
+
+# 2. Money Movement
+api_router.include_router(transactions.router, prefix="/transactions", tags=["transactions"])
+api_router.include_router(transfers.router, prefix="/transfers", tags=["transfers"])
+
+# 3. Analytics/Views
+api_router.include_router(snapshot.router, prefix="/snapshot", tags=["snapshot"])
+
