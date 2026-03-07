@@ -1,11 +1,19 @@
+"""
+API v1 router. Aggregates all module routers.
+
+When implementing use cases: every endpoint that reads or writes user-scoped data
+must inject AuthContext (e.g. Depends(get_auth_context)) and pass auth.user_id
+to the use case. Repositories must always filter by user_id. See docs/repositories.md.
+"""
 from fastapi import APIRouter
+
 from src.infrastructure.api.v1.endpoints import (
-    periods,
-    categories,
     allocations,
+    categories,
+    periods,
+    snapshot,
     transactions,
     transfers,
-    snapshot
 )
 
 api_router = APIRouter()
