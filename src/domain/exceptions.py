@@ -18,7 +18,7 @@ class ErrorCode(str, Enum):
 class AppError(Exception):
     """
     Base exception for the entire application.
-    Cualquier regla de negocio que falle debe lanzar esta excepción.
+    Any business rule that fails must raise this exception.
     """
     def __init__(
         self, 
