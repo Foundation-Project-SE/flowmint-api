@@ -1,4 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+
+from src.application.ports.auth_context import AuthContext
+from src.infrastructure.auth import get_auth_context
+from src.presentation.schemas.me import MeResponse
 
 from src.domain.exceptions import AppError, ErrorCode
 from src.infrastructure.api.v1.schemas.response import DataResponse
@@ -6,22 +10,29 @@ from src.infrastructure.api.v1.schemas.response import DataResponse
 api_router = APIRouter()
 
 
-@api_router.get("/health", response_model=DataResponse[dict], tags=["System"])
+@api_router.get("/health", tags=["System"])
 async def health_check():
-    """Check if system is currently operational. Returns success envelope."""
-    return DataResponse(data={"status": "ok", "database": "connected"})
+    """Check if system is currently operational."""
+    return {
+        "status": "ok",
+        "app": "FlowMind API",
+        "version": "0.1.0",
+    }
 
 
-@api_router.get("/test-error", tags=["System"])
-async def test_error():
-    """Demonstrates business error envelope (PERIOD_CLOSED). Remove or guard in production."""
-    raise AppError(
-        error_code=ErrorCode.PERIOD_CLOSED,
-        message="You cannot register transactions in a closed month.",
-    )
-
-
-@api_router.get("/ping", response_model=DataResponse[dict], tags=["System"])
+@api_router.get("/ping", tags=["System"])
 async def ping():
-    """Simple latency check. Returns success envelope."""
-    return DataResponse(data={"message": "pong"})
+    """Simple latency check."""
+    return {"message": "pong"}
+
+
+@api_router.get("/me", response_model=MeResponse)
+async def get_my_profile(auth: AuthContext = Depends(get_auth_context)):
+    """
+    Protected route. Returns the authenticated user context.
+    Requires valid Bearer token.
+    """
+    return MeResponse(
+        message="You have entered the VIP zone!",
+        user_id=auth.user_id,
+    )

@@ -66,7 +66,17 @@ Optional (with default values):
 ```env
 PROJECT_NAME=FlowMind API
 API_V1_STR=/api/v1
+APP_ENV=dev
 ```
+
+Stub auth (MVP development only, disabled in prod):
+
+```env
+STUB_AUTH_TOKEN=test-token-mvp
+STUB_AUTH_USER_ID=123e4567-e89b-12d3-a456-426614174000
+```
+
+If `STUB_AUTH_TOKEN` or `STUB_AUTH_USER_ID` is empty, stub auth rejects all tokens.
 
 ### 4. Activate the virtual environment (if using Poetry)
 
@@ -97,6 +107,7 @@ The application will be available at `http://localhost:8000`.
 | **GET** | `/` | Redirects to Swagger documentation (`/docs`) |
 | **GET** | `/api/v1/health` | System health check. Verifies the service is operational. |
 | **GET** | `/api/v1/ping` | Simple latency test. Returns `{"message": "pong"}` |
+| **GET** | `/api/v1/me` | Protected. Returns authenticated user context. Requires Bearer token. |
 | **GET** | `/docs` | Interactive Swagger UI documentation |
 | **GET** | `/api/v1/openapi.json` | OpenAPI schema in JSON format |
 
