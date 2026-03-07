@@ -7,6 +7,15 @@ from src.presentation.schemas.me import MeResponse
 from src.domain.exceptions import AppError, ErrorCode
 from src.infrastructure.api.v1.schemas.response import DataResponse
 
+from src.infrastructure.api.v1.endpoints import (
+    allocations,
+    categories,
+    periods,
+    snapshot,
+    transactions,
+    transfers,
+)
+
 api_router = APIRouter()
 
 
