@@ -1,7 +1,11 @@
 from fastapi import APIRouter, Depends
-from src.infrastructure.auth.dependencies import get_current_user_id_stub
+
+from src.application.ports.auth_context import AuthContext
+from src.infrastructure.auth import get_auth_context
+from src.presentation.schemas.me import MeResponse
 
 api_router = APIRouter()
+
 
 @api_router.get("/health", tags=["System"])
 async def health_check():
@@ -9,21 +13,23 @@ async def health_check():
     return {
         "status": "ok",
         "app": "FlowMind API",
-        "version": "0.1.0"
+        "version": "0.1.0",
     }
+
 
 @api_router.get("/ping", tags=["System"])
 async def ping():
-    """Simple latency check"""
+    """Simple latency check."""
     return {"message": "pong"}
 
-@api_router.get("/me")
-def get_my_profile(current_user_id: str = Depends(get_current_user_id_stub)):
+
+@api_router.get("/me", response_model=MeResponse)
+async def get_my_profile(auth: AuthContext = Depends(get_auth_context)):
     """
-    This route is protected. FastAPI will inject the user ID
-    only if the token is valid according to our Stub.
+    Protected route. Returns the authenticated user context.
+    Requires valid Bearer token.
     """
-    return {
-        "message": "You have entered the VIP zone!",
-        "user_id": current_user_id
-    }
+    return MeResponse(
+        message="You have entered the VIP zone!",
+        user_id=auth.user_id,
+    )
