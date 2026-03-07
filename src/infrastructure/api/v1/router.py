@@ -4,6 +4,9 @@ from src.application.ports.auth_context import AuthContext
 from src.infrastructure.auth import get_auth_context
 from src.presentation.schemas.me import MeResponse
 
+from src.domain.exceptions import AppError, ErrorCode
+from src.infrastructure.api.v1.schemas.response import DataResponse
+
 api_router = APIRouter()
 
 
